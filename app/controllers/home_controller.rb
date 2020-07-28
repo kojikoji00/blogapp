@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
   def index
     # render 'home/index'
-    @title  = "デイトラ"
+    @article = Article.first
+    # Articleモデルをインスタンス変数に
   end
   def about
   end
