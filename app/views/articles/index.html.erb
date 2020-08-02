@@ -10,7 +10,7 @@
   </div>
 
   <% @articles.each do |article| %>
-    <%# <%= link_to article_path(id: article.id) do %> %>
+    <%# <%= link_to article_path(id: article.id) do %>
     <%= link_to article_path(article) do %>
     <%# idはarticleのidを使用する宣言  id: article.idはarticleに省略可能、自動的にidを拾う%>
       <div class="card">
