@@ -1,15 +1,17 @@
 class ArticlesController < ApplicationController
   # @article = Article.find(params[:id])は全てのアクションで実行しているため
   # before_actionとしてset_articleでまとめる
-  before_action :set_article, only: [:show, :edit, :update]
+  before_action :set_article, only: %i[show edit update]
   # index new destroyでは実行する必要がないためonlyを入力する,
 
   def index
     @articles = Article.all
   end
+
   def show
     # @article = Article.find(params[:id])
   end
+
   def new
     @article = Article.new
   end
@@ -53,11 +55,11 @@ class ArticlesController < ApplicationController
     redirect_to root_path, notice: '削除に成功しました'
     # 削除されなければおかしいから処理を止める。
     # destroy はデータを削除するだけで何かを表示するわけではないためインスタンス変数としない
-  # @articleとしていると慣習的にviewで表示されていると思われてしまう
+    # @articleとしていると慣習的にviewで表示されていると思われてしまう
   end
 
-
   private
+
   # strong parameter はprivateを必ずつける
   # article（モデル名）paramsというアクション名にする決まり
   def article_params
@@ -68,6 +70,7 @@ class ArticlesController < ApplicationController
     # articleというキーを持っていないと認めない。require:必須とする
     # permit 保存する対象を限定し許可する
   end
+
   def set_article
     @article = Article.find(params[:id])
   end
