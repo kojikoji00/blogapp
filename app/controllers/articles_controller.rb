@@ -42,6 +42,14 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def destroy
+    article = Article.find(params[:id])
+    article.destroy!
+    redirect_to root_path, notice: '削除に成功しました'
+    # 削除されなければおかしいから処理を止める。
+    # destroy はデータを削除するだけで何かを表示するわけではないためインスタンス変数としない
+  end
+
 
   private
   # strong parameter はprivateを必ずつける
