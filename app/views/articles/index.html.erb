@@ -1,40 +1,13 @@
 
 <div class="container">
-  <div class="tabs">
-    <div class="tabs_item active">
-      新着記事一覧
-    </div>
-    <div class="tabs_item">
-      タイムライン
-    </div>
-  </div>
+  <%= render 'tabs' %>
+  <%# tabs partialへ %>
 
   <% @articles.each do |article| %>
     <%# <%= link_to article_path(id: article.id) do %>
-    <%= link_to article_path(article) do %>
-    <%# idはarticleのidを使用する宣言  id: article.idはarticleに省略可能、自動的にidを拾う%>
-      <div class="card">
-        <div class="card_image">
-          <%= image_tag 'eyecatch1.png' %>
-        </div>
-        <div class="card_content">
-          <div class="card_title">
-            <%= article.title %>
-          </div>
-          <div class="card_heart">
-            <%= image_tag 'heart.svg' %>
-            <span>23</span>
-          </div>
-          <div class="card_detail">
-            <%= image_tag 'default-avatar.png' %>
-            <div>
-              <p>cohki0305</p>
-              <p>2020/4/16</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= render 'article', article: article %>
+    articleが勝手に渡されているわけではない
+    <%# 左article: |article|,   右article: _articleパーシャルの中の(article) %>
   <% end %>
   <%= link_to new_article_path do%>
     <div class="float_btn">

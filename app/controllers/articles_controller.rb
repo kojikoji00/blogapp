@@ -1,9 +1,14 @@
 class ArticlesController < ApplicationController
+  # @article = Article.find(params[:id])は全てのアクションで実行しているため
+  # before_actionとしてset_articleでまとめる
+  before_action :set_article, only: [:show, :edit, :update]
+  # index new destroyでは実行する必要がないためonlyを入力する,
+
   def index
     @articles = Article.all
   end
   def show
-    @article = Article.find(params[:id])
+    # @article = Article.find(params[:id])
   end
   def new
     @article = Article.new
@@ -27,11 +32,11 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    @article = Article.find(params[:id])
+    # @article = Article.find(params[:id])
   end
 
   def update
-    @article = Article.find(params[:id])
+    # @article = Article.find(params[:id])
     if @article.update(article_params)
       redirect_to article_path(@article), notice: '更新できました'
       # article_path 記事詳細ページ
@@ -48,6 +53,7 @@ class ArticlesController < ApplicationController
     redirect_to root_path, notice: '削除に成功しました'
     # 削除されなければおかしいから処理を止める。
     # destroy はデータを削除するだけで何かを表示するわけではないためインスタンス変数としない
+  # @articleとしていると慣習的にviewで表示されていると思われてしまう
   end
 
 
@@ -61,6 +67,8 @@ class ArticlesController < ApplicationController
     params.require(:article).permit(:title, :content)
     # articleというキーを持っていないと認めない。require:必須とする
     # permit 保存する対象を限定し許可する
-
+  end
+  def set_article
+    @article = Article.find(params[:id])
   end
 end
