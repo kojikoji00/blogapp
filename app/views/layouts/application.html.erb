@@ -9,6 +9,8 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
   </head>
 
   <body>
@@ -23,6 +25,15 @@
         </div>
       </div>
     </header>
+    <% if flash.present? %>
+      <div class="flash">
+        <% flash.each do |key, value| %>
+        <%# flashはハッシュ ハッシュでeachするときはキーとバリューを取得できる %>
+        <%# key: notice value: 保存できたよ %>
+          <div class="<%= key %>"><%= value %></div>
+        <% end %>
+      </div>
+    <% end %>
     <%= yield %>
     <%# about/indexなどはここのyieldに埋め込まれている %>
   </body>
