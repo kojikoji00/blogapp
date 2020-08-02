@@ -1,25 +1,2 @@
-<%# newとほぼ一緒なのでコピペ %>
-<div class="containaer">
-  <ul>
-    <% @article.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
-  <%= form_with(model: @article, url: article_path(@article) , method: 'put', local: true) do |f| %>
-  <%# modelは変更なし、urlはarticles_path→article_path(@article)に変更 %>
-  <%# methodはpost→putへ変更 %>
-    <div>
-      <%= f.label :title, 'タイトル' %>
-    </div>
-    <div>
-      <%= f.text_field :title, class: 'text' %>
-    </div>
-      <div>
-        <%= f.label :content, '内容' %>
-      </div>
-    <div>
-      <%= f.text_area :content %>
-    </div>
-    <%= f.submit '保存', class: 'btn-primary' %>
-  <% end %>
-</div>
+<%= render 'form', article: @article %>
+<%# newと同じ内容を入れる %>
