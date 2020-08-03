@@ -10,12 +10,12 @@
 #
 class Article < ApplicationRecord
   validates :title, presence: true
-  validates :title, length: {minimum: 2, maximum: 100}
+  validates :title, length: { minimum: 2, maximum: 100 }
   validates :title, format: { with: /\A(?!\@)/ }
 
   validates :content, presence: true
-  validates :content, length: {minimum: 10}
-  validates :content, uniqueness:  true
+  validates :content, length: { minimum: 10 }
+  validates :content, uniqueness: true
   validate :validate_title_and_content_length
   # validateは独自ルール
   # presence 入力されていない場合は保存しない
@@ -25,11 +25,13 @@ class Article < ApplicationRecord
     # I18n.l(@article.created_at, format: :default)
     # articleクラスのインスタンスだからそのクラスに定義されているメソッドを使える
     # articleはselfで取得している
-  private
-    def validate_title_and_content_length
-      char_count = self.title.length + self.content.length
-      errors.add(:content, '100文字以上で！') unless char_count > 100
-    end
+
+    private
+
+  def validate_title_and_content_length
+    char_count = title.length + content.length
+    errors.add(:content, '100文字以上で！') unless char_count > 100
+  end
     # unless char_count > 100
     #     errors.add(:content, '100文字以上で！')
     # char = character(文字)

@@ -2,6 +2,8 @@ class ArticlesController < ApplicationController
   # @article = Article.find(params[:id])は全てのアクションで実行しているため
   # before_actionとしてset_articleでまとめる
   before_action :set_article, only: %i[show edit update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  # ログインしていないと使えないauthenticate_user! new create edit update destroy
   # index new destroyでは実行する必要がないためonlyを入力する,
 
   def index
