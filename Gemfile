@@ -25,6 +25,7 @@ gem 'annotate'
 gem 'better_errors'
 gem 'binding_of_caller'
 # エラーを見やすく
+gem 'devise'
 gem 'faker'
 gem 'hamlit'
 
