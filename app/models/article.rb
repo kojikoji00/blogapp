@@ -22,10 +22,14 @@ class Article < ApplicationRecord
   validates :content, length: { minimum: 10 }
   validates :content, uniqueness: true
   validate :validate_title_and_content_length
+  has_many :comments, dependent: :destroy
+  # 記事が消えたらコメントも消える
   belongs_to :user
   # validateは独自ルール
   # presence 入力されていない場合は保存しない
   # 一人のユーザーにしか紐づかないので単数形userで書く
+  # commentと紐付ける
+
   def display_created_at
     I18n.l(created_at, format: :default)
   end
