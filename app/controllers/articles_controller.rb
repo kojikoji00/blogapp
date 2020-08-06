@@ -1,13 +1,17 @@
 class ArticlesController < ApplicationController
   # @article = Article.find(params[:id])は全てのアクションで実行しているため
   # before_actionとしてset_articleでまとめる
-  before_action :set_article, only: %i[show edit update]
+  before_action :set_article, only: [:show]
+  # before_action :set_article, only: %i[show edit update]
+  # editとupdateを削除
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   # ログインしていないと使えないauthenticate_user! new create edit update destroy
   # index new destroyでは実行する必要がないためonlyを入力する,
 
   def index
     @articles = Article.all
+    # current_userログインしているユーザーのみに限定する
+    # 関連ができている時はnewではなくbuildにして空の箱を作る
   end
 
   def show
@@ -15,11 +19,12 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
+    # @article = Article.new
+    @article = current_user.articles.build
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.build(article_params)
     # article_paramsからcontentとtitleを持ってくる
     # データベースに値を保存するためsave
     if @article.save
@@ -36,11 +41,15 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @article = current_user.articles.find(params[:id])
     # @article = Article.find(params[:id])
+    # 他人の記事が編集できないようにcurrent_userを入れる
+    # ログインしているユーザーががそこからidを見つけて表示
   end
 
   def update
     # @article = Article.find(params[:id])
+    @article = current_user.articles.find(params[:id])
     if @article.update(article_params)
       redirect_to article_path(@article), notice: '更新できました'
       # article_path 記事詳細ページ
@@ -52,7 +61,7 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    article = Article.find(params[:id])
+    article = current_user.articles.find(params[:id])
     article.destroy!
     redirect_to root_path, notice: '削除に成功しました'
     # 削除されなければおかしいから処理を止める。
