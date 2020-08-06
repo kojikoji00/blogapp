@@ -16,6 +16,7 @@ class ArticlesController < ApplicationController
 
   def show
     # @article = Article.find(params[:id])
+    @comments = @article.comments
   end
 
   def new
@@ -25,20 +26,20 @@ class ArticlesController < ApplicationController
 
   def create
     @article = current_user.articles.build(article_params)
-    # article_paramsからcontentとtitleを持ってくる
-    # データベースに値を保存するためsave
     if @article.save
       redirect_to article_path(@article), notice: '保存できたよ'
-      # noticeフラッシュメッセージ
     else
       flash.now[:error] = '保存に失敗しました'
       render :new
+    end
+  end
+      # noticeフラッシュメッセージ
+      # article_paramsからcontentとtitleを持ってくる
+      # データベースに値を保存するためsave
       # new.html.erbを指定して表示させようとしている
       # 保存に失敗した場合は、new.html.erbのform_withに基づいてデータを作成保存する。
       # Render.newとするのが基本
       # 成功したパターンと失敗した場合とで書き方が違う
-    end
-  end
 
   def edit
     @article = current_user.articles.find(params[:id])
