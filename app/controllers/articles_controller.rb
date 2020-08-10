@@ -75,13 +75,14 @@ class ArticlesController < ApplicationController
   # strong parameter はprivateを必ずつける
   # article（モデル名）paramsというアクション名にする決まり
   def article_params
-    puts '----------------------------'
-    puts params
-    puts '----------------------------'
-    params.require(:article).permit(:title, :content)
+    params.require(:article).permit(:title, :content, :eyecatch)
+  end
+    # puts '----------------------------'
+    # puts params
+    # puts '----------------------------'
+    # params.require(:article).permit(:title, :content)
     # articleというキーを持っていないと認めない。require:必須とする
     # permit 保存する対象を限定し許可する
-  end
 
   def set_article
     @article = Article.find(params[:id])
