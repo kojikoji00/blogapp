@@ -21,6 +21,7 @@
           = link_to 'Edit', edit_profile_path
       .profilePage_user_introduction
         = current_user.profile&.introduction
+        -# ぼっち演算子
         -# あああああああああああああああああああああああああああああああああああああああああああああああああああああ
 
   - current_user.articles.each do |article|
