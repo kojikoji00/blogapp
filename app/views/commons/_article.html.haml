@@ -16,6 +16,6 @@
         = image_tag article.user.avatar_image
         %div
           -# - if article.user.present?
-             -# Databaseでnull:falseで絶対に存在することを指定したので消す
+          -# Databaseでnull:falseで絶対に存在することを指定したので消す
           %p= article.author_name
           %p= article.display_created_at
