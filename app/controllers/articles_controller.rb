@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   # @article = Article.find(params[:id])は全てのアクションで実行しているため
-  # before_actionとしてset_articleでまとめる
   before_action :set_article, only: [:show]
+  # before_actionとしてset_articleでまとめる
   # before_action :set_article, only: %i[show edit update]
   # editとupdateを削除
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
