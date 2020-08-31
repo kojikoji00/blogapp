@@ -1,0 +1,56 @@
+.container.profilePage
+  .profilePage_user
+    .profilePage_user_image
+      = image_tag user.avatar_image
+    -# %user.rbでif文が入らなくなった
+      - if current_user.profile&.avatar&.attached?
+    -# current_user.profile&.avatar&.attached?
+    -#   = image_tag 'default-avatar.png'
+    -#     = image_tag current_user.profile.avatar
+    -#   - else
+    -# -# = image_tag 'default-avatar.png'
+    .profilePage_user_basicInfo
+      .profilePage_user_name
+        .profilePage_user_displayName
+          -# = current_user.display_name
+          -# #{current_user.display_name} (#{current_user.age}・#{current_user.gender})
+          #{user.display_name} (#{user.age || '？歳'}・#{I18n.t("enum.genders.#{user.gender || 'unknown'}")})
+          -# localesのenum.ja.ymlに追記
+          -# nilだったら？歳
+          -# 引数扱いになってしまうため、カッコで区切る　イコール消す
+          -# 多言語化するためのI18n.t 階層を見て値をとってきてくれる
+        .profilePage_user_actionButton
+          - if user == current_user
+            = link_to 'Edit', edit_profile_path
+          - else
+            - if current_user&.has_followed?(user)
+              = link_to 'Unfollow', account_unfollows_path(user), data: {method: 'post'}
+              -# ぼっち演算子
+            - else
+              = link_to 'Follow', account_follows_path(user), data: {method: 'post'}
+      .profilePage_user_introduction
+        = user.profile&.introduction
+        -# ぼっち演算子
+        -# あああああああああああああああああああああああああああああああああああああああああああああああああああああ
+
+  - current_user.articles.each do |article|
+    = render 'commons/article', article: article
+    -# DRYじゃないので article.html.hamlからコピペしてきたものを書き換え↑
+    -# article はcommonsフォルダを作って移動。共通だから
+    -# = link_to article_path(article) do
+    -#   .card
+    -#     .card_image
+    -#       = image_tag 'eyecatch1.png'
+    -#     .card_content
+    -#       .card_title
+    -#         = article.title
+    -#       .card_heart
+    -#         = image_tag 'heart.svg'
+    -#         %span 23
+    -#       .card_detail
+    -#         = image_tag 'default-avatar.png'
+    -#         %div
+              -# - if article.user.present?
+                -# Database側ででnull:falseで絶対に存在することを指定したので消す
+              %p= article.author_name
+              %p= article.display_created_at
