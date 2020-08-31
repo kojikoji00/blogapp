@@ -24,6 +24,14 @@ class User < ApplicationRecord
   has_many :articles, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :favorite_articles, through: :likes, source: :article
+  has_many :following_relationships, foreign_key: 'follower_id', class_name: 'Relationship', dependent: :destroy
+  has_many :followings, through: :following_relationships, source: :following
+  has_many :follower_relationships, foreign_key: 'following_id', class_name: 'Relationship', dependent: :destroy
+  has_many :followers, through: :follower_relationships, source: :follower
+
+  # フォローしている人たちのことをfollowingという
+  # 自分がフォロワーになっているときのフォローしている時のデータを持ってくる following_relationships
+  # user has_many_likesだと察してくれるけど今回は違うから指定しなければならない
   #  本来であればuserとarticleは紐づいていない has_manyの関係
   #  through:likesテーブルを通して記事をとる
   #  davoriteメソッドは本来存在しないのでarticleのことを言っていると説明
@@ -45,8 +53,39 @@ class User < ApplicationRecord
   end
   # いいねしているかどうかの確認
 
-  def display_name
-    profile&.nickname || self.email.split('@').first
+  def follow!(user)
+    # if user.is_a?(User)
+    #   user_id = user.id
+    # else
+    #   user_id = user
+    #   # is_a?:インスタンスだった場合
+    # end
+    user_id = get_user_id(user)
+    following_relationships.create!(following_id: user_id)
+  end
+  # following_relationships.create!(following_id: user.id)
+  # follower.idは自分が紐付けられるのであとはfollowingのユーザー情報が必要
+
+  def unfollow!(user)
+    # if user.is_a?(User)
+    #   user_id = user.id
+    # else
+    #   user_id = user
+    #   # is_a?:インスタンスだった場合
+    # end
+    user_id = get_user_id(user)
+    relation = following_relationships.find_by!(following_id: user_id)
+    relation.destroy!
+    # followしている対象が存在しないとおかしいから「！」をつける
+  end
+  # current_user.has_followed(User.second)
+  def has_followed?(user)
+    following_relationships.exists?(following_id: user.id)
+  end
+
+  # def display_name
+  #   profile&.nickname || self.email.split('@').first
+  # end
     # ぼっち演算子 ：&. nilじゃ無い時だけnicknameを実行
     # if  profile && profile.nickname
     #   profile.nickname
@@ -57,7 +96,6 @@ class User < ApplicationRecord
     # self.email.split('@').first
     # @で分割する emailの@以前を取得
     # profileのニックネームもしくはEmailの最初を指定
-  end
   # def birthday
   #   profile&.birthday
   # end
@@ -70,11 +108,30 @@ class User < ApplicationRecord
     profile || build_profile
   end
 
-  def avatar_image
-    if profile&.avatar&.attached?
-      profile.avatar
+  # def avatar_image
+  #   if profile&.avatar&.attached?
+  #     profile.avatar
+  #   else
+  #     'default-avatar.png'
+  #   end
+  # end
+
+  private
+  def get_user_id(user)
+    # if user.is_a?(User)
+    #   user_id = user.id
+    # else
+    #   user_id = user
+    #   # is_a?:インスタンスだった場合
+    # end
+    if user.is_a?(User)
+      user.id
     else
-      'default-avatar.png'
+      user
     end
+      # is_a?:インスタンスだった場合
+      # user_idに代入する必要がなくなる
+      # followとunfollowのなかでしか使わないからprivateのなかにいれる
+     # private内ではuserインスタンスから呼び出せない
   end
 end
