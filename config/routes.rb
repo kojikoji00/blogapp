@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   resource :timeline, only: [:show]
   # resources :articles, only: [:show, :new, :create, :edit, :update, :destroy]
   resources :articles do
-    resources :comments, only: [:new, :create]
-    resource :like, only: [:create, :destroy]
+    resources :comments, only: [:index, :new, :create]
+    resource :like, only: [:show, :create, :destroy]
+    # いいねしているかしていないかを見るためshow
     # いいねは一回だけだから単数系 複数にするときはIDを参照しなければならない
     # これを複数形にするとidを指定することになる
     # Like.find(params[:id]).destroyとなるが適当なIDを指定して削除することができる
