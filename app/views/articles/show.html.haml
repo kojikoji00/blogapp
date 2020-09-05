@@ -1,4 +1,4 @@
-.article
+.article#article-show{data: {article_id: @article.id}}
   -if @article.eyecatch.attached?
     .article_image
       = image_tag @article.eyecatch
@@ -26,14 +26,17 @@
   .article_content
     = @article.content
   - if user_signed_in?
-    - if current_user.has_liked?(@article)
-      .article_heart
-        = link_to article_like_path(@article), data: {method: 'delete'} do
-          = image_tag 'heart-active.svg'
-    - else
-      .article_heart
-        = link_to article_like_path(@article), data: { method: 'post' } do
-          = image_tag 'heart.svg'
+    -# - if current_user.has_liked?(@article)
+    .article_heart.hidden.active-heart
+      = image_tag 'heart-active.svg'
+      -# .hiddenで 隠す
+      -# = link_to article_like_path(@article), data: {method: 'delete'} do
+      -# javascriptは元々クリックとかに反応する linktoいらない
+    -# - else
+    .article_heart.hidden.inactive-heart
+      = image_tag 'heart.svg'
+      -# = link_to article_like_path(@article), data: { method: 'post' } do
+  -# rubyで操作してしまうとjavascript操作できなくなる
 -# if文を追加 いいね機能
 -# idを指定する必要があるため@articleとしている
 -# postなのでmethodを指定している。link_toは基本get
@@ -42,11 +45,21 @@
 
 .article
   %h2 コメント一覧
-  - @comments.each do |comment|
-    .article_comment
-      %p= comment.content
+  .comments-container
+  -# javascriptで書くので不要に
+  -# - @comments.each do |comment|
+    -# .article_comment
+    -#   %p= comment.content
 .container
-  = link_to new_article_comment_path(@article) do
-    .btn-secondary
+  -# = link_to new_article_comment_path(@article) do
+  -# javascript でかく
+  .btn-secondary.show-comment-form
+    コメントを追加
+  .comment-text-area.hidden
+    = text_area_tag :comment_content, '', class: 'sm'
+    .btn-secondary.add-comment-button
       コメントを追加
+    -# クラス：スモール
+    -# ''は初期値
   -# rautesを確認 article_idがあるから引数にarticleを渡している
+  = javascript_pack_tag 'article'

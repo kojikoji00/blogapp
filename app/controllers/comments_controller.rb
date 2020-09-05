@@ -5,17 +5,27 @@ class CommentsController < ApplicationController
     @comment = article.comments.build
   end
   # 下のarticleに渡すからインスタンス変数ではない？
+# indexを追加
+  def index
+    article = Article.find(params[:article_id])
+    comments = article.comments
+    render json: comments
+  end
 
   def create
     article = Article.find(params[:article_id])
     @comment = article.comments.build(comment_params)
-    if @comment.save
-      redirect_to article_path(article), notice: 'コメントを追加'
-    else
-      flash.now[:error] = '更新できませんでした'
-      render :new
-    end
+    @comment.save!
+
+    render json: @comment
+    #   redirect_to article_path(article), notice: 'コメントを追加'
+    # else
+    #   flash.now[:error] = '更新できませんでした'
+    #   render :new
+    # end
   end
+  # 必ず保存できることを想定しているのでif文いらない
+  # javascript適用することでいらなくなる
   # comment_paramsを使ってbuild
 
 # POST?
