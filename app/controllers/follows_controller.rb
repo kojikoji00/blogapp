@@ -1,4 +1,4 @@
-class FollowsController < ApplicationController
+class Apps::FollowsController < Apps::ApplicationController
   before_action :authenticate_user!
   def create
     current_user.follow!(params[:account_id])

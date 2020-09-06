@@ -1,9 +1,9 @@
-class CommentsController < ApplicationController
+class Api::CommentsController < Api::ApplicationController
   # controller名は複数形を使う
-  def new
-    article = Article.find(params[:article_id])
-    @comment = article.comments.build
-  end
+  # def new
+  #   article = Article.find(params[:article_id])
+  #   @comment = article.comments.build
+  # end
   # 下のarticleに渡すからインスタンス変数ではない？
 # indexを追加
   def index
