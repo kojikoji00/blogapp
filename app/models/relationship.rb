@@ -26,7 +26,9 @@ class Relationship < ApplicationRecord
 
   private
   def send_email
-    RelationshipMailer.new_follower(following, follower).deliver_now
+    # RelationshipMailer.new_follower(following, follower).deliver_now
+    RelationshipMailer.new_follower(following, follower).deliver_later
+    # 今すぐ送るか非同期で送るか
   end
 # followに入れておくと抜け漏れあるかも
 
