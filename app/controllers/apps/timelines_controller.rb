@@ -1,5 +1,4 @@
-class TimelinesController < ApplicationController
-  before_action :authenticate_user!
+class Apps::TimelinesController < Apps::ApplicationController
 
   def show
     # user2, user3, user4 => [2,3,4]
