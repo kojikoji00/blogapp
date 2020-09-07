@@ -45,9 +45,13 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rubocop-rails'
   gem 'dotenv-rails'
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
   # デバッグツール
   # 文法間違いをチェック
   # テスト環境のみで実行する
+  # ファクトリーボット：テスト用ダミーデータ
+  # →これを入れる時にspec:models:rails_helper.rbに記載しなければならない
 end
 
 group :development do
