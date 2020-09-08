@@ -64,4 +64,7 @@ RSpec.configure do |config|
 
   # ファクトリーボット追加のため記載 →factoriesフォルダーを作成
   config.include FactoryBot::Syntax::Methods
+  
+  # デバイスをRSpec環境にで使用することを明記
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
