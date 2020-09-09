@@ -66,5 +66,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   
   # デバイスをRSpec環境にで使用することを明記
+  # requestspecで使えるように
   config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
 end
