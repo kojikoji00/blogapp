@@ -44,7 +44,8 @@
 -# ifをさらに追加
 
 .article
-  %h2 コメント一覧
+  -# %h2 コメント一覧
+  %h2= I18n.t('articles.comment_list')
   .comments-container
   -# javascriptで書くので不要に
   -# - @comments.each do |comment|
